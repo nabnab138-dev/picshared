@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Profile - PicShared</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html">Home</a>
+    <a href="users.html">Users</a>
+    <a href="upload.html">Upload Photo</a>
+    <a href="signup.html" id="signup-link">Signup</a>
+    <a href="login.html" id="login-link">Login</a>
+    <a href="#" id="logout-link" style="display:none;">Logout</a>
+  </header>
+  <h1 id="username"></h1>
+  <div id="meta"></div>
+  <h2>Photos</h2>
+  <div id="photos"></div>
+  <script>
+    function getUserFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("user");
+    }
+    const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
+    function updateAuthLinks() {
+      const loggedIn = !!localStorage.getItem('token');
+      const loginLink = document.getElementById('login-link');
+      const signupLink = document.getElementById('signup-link');
+      const logoutLink = document.getElementById('logout-link');
+      if (loginLink) loginLink.style.display = loggedIn ? 'none' : '';
+      if (signupLink) signupLink.style.display = loggedIn ? 'none' : '';
+      if (logoutLink) logoutLink.style.display = loggedIn ? '' : 'none';
+    }
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+      logoutLink.onclick = function() {
+        localStorage.removeItem('token');
+        updateAuthLinks();
+      };
+    }
+    updateAuthLinks();
+
+    async function loadProfile() {
+      const user = getUserFromQuery();
+      if (!user) {
+        document.getElementById("username").innerText = "No user specified.";
+        return;
+      }
+      let res = await fetch(`${API}/api/users/${user}`);
+      if (!res.ok) {
+        document.getElementById("username").innerText = "User not found.";
+        return;
+      }
+      let data = await res.json();
+      document.getElementById("username").innerText = data.username;
+      document.getElementById("meta").innerHTML = `<b>Member since:</b> ${data.memberSince}`;
+      if (data.photos && data.photos.length > 0) {
+        document.getElementById("photos").innerHTML = data.photos.map(p => `
+          <div class="photo">
+            <img src="${API}/uploads/${p.filename}" alt="${p.title}" style="max-width:200px;"><br>
+            <b>${p.title}</b>
+          </div>
+        `).join("");
+      } else {
+        document.getElementById("photos").innerText = "No photos uploaded yet.";
+      }
+    }
+    loadProfile();
+  </script>
+</body>
+</html>
