@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Photo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="index.html">&larr; Back</a>
+  <div id="photo"></div>
+  <script>
+  // CHANGE API URL here to match app.js!
+  const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
+  // Get photo id from URL
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  async function loadPhoto() {
+    let res = await fetch(`${API}/api/photos/${id}`);
+    if (!res.ok) { document.getElementById("photo").innerHTML = "Not found."; return; }
+    let p = await res.json();
+    document.title = p.title + " - PicShared";
+    document.getElementById("photo").innerHTML = `
+      <h1>${p.title}</h1>
+      <img src="${API}/uploads/${p.filename}" style="max-width:400px;"><br>
+      <b>Description:</b> ${p.description && p.description.trim() ? p.description : "No description"}<br>
+      <b>Uploaded by:</b> ${p.uploader}<br>
+      <b>Date:</b> ${new Date(p.date).toLocaleString()}
+    `;
+  }
+  loadPhoto();
+  </script>
+</body>
+</html>
