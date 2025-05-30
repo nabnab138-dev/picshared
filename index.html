@@ -5,49 +5,37 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <a href="index.html">Home</a> |
+    <a href="users.html">Users</a>
+  </header>
   <h1>PicShared</h1>
-  <div id="auth-bar">
-    <span id="welcome"></span>
-    <button id="login-btn">Login</button>
-    <button id="register-btn">Register</button>
-    <button id="logout-btn" style="display:none;">Logout</button>
-    <button id="upload-btn" style="display:none;">Upload</button>
-  </div>
-  <h2>Recent Uploads</h2>
-  <ul id="photos"></ul>
-
-  <!-- Login Modal -->
-  <div id="login-modal" class="modal" style="display:none;">
-    <form id="login-form">
-      <h3>Login</h3>
-      <input name="username" placeholder="Username" required>
-      <input name="password" placeholder="Password" type="password" required>
-      <button>Login</button>
-      <span id="login-error"></span>
-    </form>
-  </div>
-  <!-- Register Modal -->
-  <div id="register-modal" class="modal" style="display:none;">
-    <form id="register-form">
-      <h3>Register</h3>
-      <input name="username" placeholder="Username" required>
-      <input name="password" placeholder="Password" type="password" required>
-      <button>Register</button>
-      <span id="register-error"></span>
-    </form>
-  </div>
-  <!-- Upload Modal -->
-  <div id="upload-modal" class="modal" style="display:none;">
-    <form id="upload-form" enctype="multipart/form-data">
-      <h3>Upload Photo</h3>
-      <input name="title" placeholder="Title" required>
-      <input name="description" placeholder="Description">
-      <input name="image" type="file" accept="image/*" required>
-      <button>Upload</button>
-      <span id="upload-error"></span>
-    </form>
-  </div>
-
-  <script src="app.js"></script>
+  <a href="upload.html">Upload Photo</a>
+  <div id="photos"></div>
+  <script>
+    const API = "https://72d30a46-d3a3-4cda-8f44-2814a423def3-00-2xzwequchk5pw.janeway.replit.dev";
+    async function loadPhotos() {
+      let res = await fetch(`${API}/api/photos`);
+      if (!res.ok) {
+        document.getElementById("photos").innerHTML = "Could not load photos.";
+        return;
+      }
+      let photos = await res.json();
+      if (!Array.isArray(photos) || photos.length === 0) {
+        document.getElementById("photos").innerHTML = "No photos yet.";
+        return;
+      }
+      document.getElementById("photos").innerHTML = photos.map(p => `
+        <div class="photo">
+          <a href="photo.html?id=${p.id}">
+            <img src="${API}/uploads/${p.filename}" alt="${p.title}" style="max-width: 200px;">
+            <br>
+            <b>${p.title}</b>
+          </a>
+        </div>
+      `).join("");
+    }
+    loadPhotos();
+  </script>
 </body>
 </html>
