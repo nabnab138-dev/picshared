@@ -42,7 +42,9 @@
         return;
       }
       let users = await res.json();
-      document.getElementById("users").innerHTML = users.map(u => `<li>${u.username}</li>`).join("");
+      document.getElementById("users").innerHTML = users.map(u =>
+        `<li><a href="profile.html?user=${encodeURIComponent(u.username)}">${u.username}</a></li>`
+      ).join("");
     }
     loadUsers();
   </script>
