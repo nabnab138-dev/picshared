@@ -2,8 +2,17 @@
 <html>
 <head>
   <title>Login - PicShared</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <a href="index.html">Home</a>
+    <a href="users.html">Users</a>
+    <a href="upload.html">Upload Photo</a>
+    <a href="signup.html" id="signup-link">Signup</a>
+    <a href="login.html" id="login-link">Login</a>
+    <a href="#" id="logout-link" style="display:none;">Logout</a>
+  </header>
   <h1>Login</h1>
   <form id="loginForm">
     <label>Username: <input type="text" name="username" required></label><br>
@@ -13,6 +22,18 @@
   <div id="result"></div>
   <script>
     const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
+    function updateAuthLinks() {
+      const loggedIn = !!localStorage.getItem('token');
+      document.getElementById('login-link').style.display = loggedIn ? 'none' : '';
+      document.getElementById('signup-link').style.display = loggedIn ? 'none' : '';
+      document.getElementById('logout-link').style.display = loggedIn ? '' : 'none';
+    }
+    document.getElementById('logout-link').onclick = function() {
+      localStorage.removeItem('token');
+      updateAuthLinks();
+    };
+    updateAuthLinks();
+
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       const username = this.username.value;
@@ -26,6 +47,7 @@
       if (data.success) {
         localStorage.setItem('token', data.token);
         document.getElementById("result").innerText = "Login successful!";
+        updateAuthLinks();
       } else {
         document.getElementById("result").innerText = data.error || "Login failed.";
       }
