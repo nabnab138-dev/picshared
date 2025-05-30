@@ -24,14 +24,20 @@
     const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
     function updateAuthLinks() {
       const loggedIn = !!localStorage.getItem('token');
-      document.getElementById('login-link').style.display = loggedIn ? 'none' : '';
-      document.getElementById('signup-link').style.display = loggedIn ? 'none' : '';
-      document.getElementById('logout-link').style.display = loggedIn ? '' : 'none';
+      const loginLink = document.getElementById('login-link');
+      const signupLink = document.getElementById('signup-link');
+      const logoutLink = document.getElementById('logout-link');
+      if (loginLink) loginLink.style.display = loggedIn ? 'none' : '';
+      if (signupLink) signupLink.style.display = loggedIn ? 'none' : '';
+      if (logoutLink) logoutLink.style.display = loggedIn ? '' : 'none';
     }
-    document.getElementById('logout-link').onclick = function() {
-      localStorage.removeItem('token');
-      updateAuthLinks();
-    };
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink) {
+      logoutLink.onclick = function() {
+        localStorage.removeItem('token');
+        updateAuthLinks();
+      };
+    }
     updateAuthLinks();
 
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
