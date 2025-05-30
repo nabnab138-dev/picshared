@@ -4,45 +4,30 @@
   <title>Login - PicShared</title>
 </head>
 <body>
-  <header>
-    <a href="index.html">Home</a>
-    <a href="users.html">Users</a>
-    <a href="upload.html">Upload Photo</a>
-    <a href="signup.html">Signup</a>
-    <a href="login.html">Login</a>
-    <a href="#" id="logout-link" style="display:none;">Logout</a>
-  </header>
   <h1>Login</h1>
   <form id="loginForm">
     <label>Username: <input type="text" name="username" required></label><br>
+    <label>Password: <input type="password" name="password" required></label><br>
     <button type="submit">Login</button>
   </form>
   <div id="result"></div>
   <script>
     const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
-    function updateAuthLinks() {
-      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      document.getElementById('login-link').style.display = loggedIn ? 'none' : '';
-      document.getElementById('signup-link').style.display = loggedIn ? 'none' : '';
-      document.getElementById('logout-link').style.display = loggedIn ? '' : 'none';
-    }
-    document.getElementById('logout-link').onclick = function() {
-      localStorage.setItem('isLoggedIn', 'false');
-      updateAuthLinks();
-    };
-    updateAuthLinks();
-
     document.getElementById("loginForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       const username = this.username.value;
-      let res = await fetch(`${API}/api/users`);
-      let users = await res.json();
-      if (users.some(u => u.username === username)) {
+      const password = this.password.value;
+      let res = await fetch(`${API}/api/login`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({username, password})
+      });
+      let data = await res.json();
+      if (data.success) {
+        localStorage.setItem('token', data.token);
         document.getElementById("result").innerText = "Login successful!";
-        localStorage.setItem('isLoggedIn', 'true');
-        updateAuthLinks();
       } else {
-        document.getElementById("result").innerText = "No such user.";
+        document.getElementById("result").innerText = data.error || "Login failed.";
       }
     });
   </script>
