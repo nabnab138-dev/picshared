@@ -1,5 +1,5 @@
 // CHANGE THIS to your deployed backend API URL!
-const API = "https://72d30a46-d3a3-4cda-8f44-2814a423def3-00-2xzwequchk5pw.janeway.replit.dev";
+const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
 
 // Utility functions
 function show(el) { el.style.display = ""; }
