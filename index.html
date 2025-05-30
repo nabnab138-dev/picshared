@@ -18,13 +18,13 @@
   <script>
     const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
     function updateAuthLinks() {
-      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const loggedIn = !!localStorage.getItem('token');
       document.getElementById('login-link').style.display = loggedIn ? 'none' : '';
       document.getElementById('signup-link').style.display = loggedIn ? 'none' : '';
       document.getElementById('logout-link').style.display = loggedIn ? '' : 'none';
     }
     document.getElementById('logout-link').onclick = function() {
-      localStorage.setItem('isLoggedIn', 'false');
+      localStorage.removeItem('token');
       updateAuthLinks();
     };
     updateAuthLinks();
