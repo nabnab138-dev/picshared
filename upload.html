@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Upload Photo - PicShared</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
@@ -23,6 +24,19 @@
   <script>
     const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
     function isLoggedIn() { return !!localStorage.getItem('token'); }
+    function updateAuthLinks() {
+      const loggedIn = isLoggedIn();
+      document.getElementById('login-link').style.display = loggedIn ? 'none' : '';
+      document.getElementById('signup-link').style.display = loggedIn ? 'none' : '';
+      document.getElementById('logout-link').style.display = loggedIn ? '' : 'none';
+    }
+    document.getElementById('logout-link').onclick = function() {
+      localStorage.removeItem('token');
+      updateAuthLinks();
+      document.getElementById("uploadForm").style.display = "none";
+      document.getElementById("result").innerText = "You must be logged in to upload.";
+    };
+    updateAuthLinks();
     if (!isLoggedIn()) {
       document.getElementById("result").innerText = "You must be logged in to upload.";
     } else {
