@@ -4,47 +4,27 @@
   <title>Signup - PicShared</title>
 </head>
 <body>
-  <header>
-    <a href="index.html">Home</a>
-    <a href="users.html">Users</a>
-    <a href="upload.html">Upload Photo</a>
-    <a href="signup.html">Signup</a>
-    <a href="login.html">Login</a>
-    <a href="#" id="logout-link" style="display:none;">Logout</a>
-  </header>
   <h1>Signup</h1>
   <form id="signupForm">
     <label>Username: <input type="text" name="username" required></label><br>
+    <label>Password: <input type="password" name="password" required></label><br>
     <button type="submit">Signup</button>
   </form>
   <div id="result"></div>
   <script>
     const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
-    function updateAuthLinks() {
-      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      document.getElementById('login-link').style.display = loggedIn ? 'none' : '';
-      document.getElementById('signup-link').style.display = loggedIn ? 'none' : '';
-      document.getElementById('logout-link').style.display = loggedIn ? '' : 'none';
-    }
-    document.getElementById('logout-link').onclick = function() {
-      localStorage.setItem('isLoggedIn', 'false');
-      updateAuthLinks();
-    };
-    updateAuthLinks();
-
     document.getElementById("signupForm").addEventListener("submit", async function(e) {
       e.preventDefault();
       const username = this.username.value;
+      const password = this.password.value;
       const res = await fetch(`${API}/api/users`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username})
+        body: JSON.stringify({username, password})
       });
       const data = await res.json();
       if (data.success) {
-        document.getElementById("result").innerText = "Signup successful!";
-        localStorage.setItem('isLoggedIn', 'true');
-        updateAuthLinks();
+        document.getElementById("result").innerText = "Signup successful! Please login.";
       } else {
         document.getElementById("result").innerText = data.error || "Signup failed.";
       }
