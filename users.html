@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Users</title>
+  <title>Users - PicShared</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <a href="index.html">Home</a> |
+    <a href="index.html">Home</a>
     <a href="users.html">Users</a>
+    <a href="upload.html">Upload Photo</a>
   </header>
   <h1>Members</h1>
   <ul id="users"></ul>
   <script>
-    const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
+    const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev/";
     async function loadUsers() {
       let res = await fetch(`${API}/api/users`);
       if (!res.ok) {
