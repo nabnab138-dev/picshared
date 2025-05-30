@@ -6,11 +6,11 @@
 </head>
 <body>
   <header>
-    <a href="index.html">Home</a> |
+    <a href="index.html">Home</a>
     <a href="users.html">Users</a>
+    <a href="upload.html">Upload Photo</a>
   </header>
   <h1>PicShared</h1>
-  <a href="upload.html">Upload Photo</a>
   <div id="photos"></div>
   <script>
     const API = "https://72d30a46-d3a3-4cda-8f44-2814a423def3-00-2xzwequchk5pw.janeway.replit.dev";
@@ -28,7 +28,7 @@
       document.getElementById("photos").innerHTML = photos.map(p => `
         <div class="photo">
           <a href="photo.html?id=${p.id}">
-            <img src="${API}/uploads/${p.filename}" alt="${p.title}" style="max-width: 200px;">
+            <img src="${API}/uploads/${p.filename}" alt="${p.title}">
             <br>
             <b>${p.title}</b>
           </a>
