@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PicShared</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>PicShared</h1>
+  <div id="auth-bar">
+    <span id="welcome"></span>
+    <button id="login-btn">Login</button>
+    <button id="register-btn">Register</button>
+    <button id="logout-btn" style="display:none;">Logout</button>
+    <button id="upload-btn" style="display:none;">Upload</button>
+  </div>
+  <h2>Recent Uploads</h2>
+  <ul id="photos"></ul>
+
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal" style="display:none;">
+    <form id="login-form">
+      <h3>Login</h3>
+      <input name="username" placeholder="Username" required>
+      <input name="password" placeholder="Password" type="password" required>
+      <button>Login</button>
+      <span id="login-error"></span>
+    </form>
+  </div>
+  <!-- Register Modal -->
+  <div id="register-modal" class="modal" style="display:none;">
+    <form id="register-form">
+      <h3>Register</h3>
+      <input name="username" placeholder="Username" required>
+      <input name="password" placeholder="Password" type="password" required>
+      <button>Register</button>
+      <span id="register-error"></span>
+    </form>
+  </div>
+  <!-- Upload Modal -->
+  <div id="upload-modal" class="modal" style="display:none;">
+    <form id="upload-form" enctype="multipart/form-data">
+      <h3>Upload Photo</h3>
+      <input name="title" placeholder="Title" required>
+      <input name="description" placeholder="Description">
+      <input name="image" type="file" accept="image/*" required>
+      <button>Upload</button>
+      <span id="upload-error"></span>
+    </form>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
