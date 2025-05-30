@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Photo - PicShared</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html">Home</a>
+    <a href="users.html">Users</a>
+    <a href="upload.html">Upload Photo</a>
+    <a href="signup.html" id="signup-link">Signup</a>
+    <a href="login.html" id="login-link">Login</a>
+    <a href="#" id="logout-link" style="display:none;">Logout</a>
+  </header>
+  <h1>Upload Photo</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <label>Title: <input type="text" name="title" required></label><br>
+    <label>Your Username: <input type="text" name="uploader" required></label><br>
+    <label>Description: <input type="text" name="description"></label><br>
+    <label>Photo: <input type="file" name="photo" accept="image/*" required></label><br>
+    <button type="submit">Upload</button>
+  </form>
+  <div id="result"></div>
+  <script>
+    const API = "https://6daa38e6-3bfb-4337-bb6c-a622fc84bf33-00-3iweonu4xllbf.picard.replit.dev";
+    function updateAuthLinks() {
+      const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      document.getElementById('login-link').style.display = loggedIn ? 'none' : '';
+      document.getElementById('signup-link').style.display = loggedIn ? 'none' : '';
+      document.getElementById('logout-link').style.display = loggedIn ? '' : 'none';
+    }
+    document.getElementById('logout-link').onclick = function() {
+      localStorage.setItem('isLoggedIn', 'false');
+      updateAuthLinks();
+    };
+    updateAuthLinks();
+
+    document.getElementById("uploadForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      document.getElementById("result").innerText = "Uploading...";
+      try {
+        let res = await fetch(`${API}/api/photos`, {
+          method: "POST",
+          body: formData
+        });
+        let data = await res.json();
+        if (data.success) {
+          document.getElementById("result").innerHTML = "Upload successful! <a href='index.html'>Go back</a>";
+        } else {
+          document.getElementById("result").innerText = data.error || "Upload failed.";
+        }
+      } catch (err) {
+        document.getElementById("result").innerText = "Error uploading photo.";
+      }
+    });
+  </script>
+</body>
+</html>
